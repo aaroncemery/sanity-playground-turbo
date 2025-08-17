@@ -231,12 +231,34 @@ export type SanityAssetSourceData = {
 
 export type AllSanitySchemaTypes = Blog | RichText | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ../sanity-web-playground/src/lib/sanity/queries.ts
-// Variable: blogPosts
-// Query: *[_type == "blog"] {    _id,    title,    slug,    image,    publishedAt,    content,  }
-export type BlogPostsResult = Array<{
+// Source: ../web/src/lib/sanity/queries.ts
+// Variable: BLOG_POSTS
+// Query: *[_type == "blog"] | order(publishedAt desc) {    _id,    title,    description,    slug,    image,    publishedAt,  }
+export type BLOG_POSTSResult = Array<{
   _id: string;
   title: string | null;
+  description: string | null;
+  slug: Slug;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  publishedAt: string;
+}>;
+// Variable: BLOG_POST
+// Query: *[  _type == "blog"  && slug.current == $slug][0]{  _id,  title,  description,  slug,  image,  publishedAt,  content}
+export type BLOG_POSTResult = {
+  _id: string;
+  title: string | null;
+  description: string | null;
   slug: Slug;
   image: {
     asset?: {
@@ -278,12 +300,13 @@ export type BlogPostsResult = Array<{
     _type: "image";
     _key: string;
   }> | null;
-}>;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "\n  *[_type == \"blog\"] {\n    _id,\n    title,\n    slug,\n    image,\n    publishedAt,\n    content,\n  }\n": BlogPostsResult;
+    "\n  *[_type == \"blog\"] | order(publishedAt desc) {\n    _id,\n    title,\n    description,\n    slug,\n    image,\n    publishedAt,\n  }\n": BLOG_POSTSResult;
+    "*[\n  _type == \"blog\"\n  && slug.current == $slug\n][0]{\n  _id,\n  title,\n  description,\n  slug,\n  image,\n  publishedAt,\n  content\n}": BLOG_POSTResult;
   }
 }
