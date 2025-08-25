@@ -7,9 +7,9 @@ import {seoFields} from '../../utils/seo-fields'
 import {isUnique} from '../../utils/slug'
 import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
 
-export const product = defineType({
-  name: 'product',
-  title: 'Product',
+export const productAutoIncrement = defineType({
+  name: 'productAutoIncrement',
+  title: 'Product Auto Increment',
   icon: ScanBarcode,
   type: 'document',
   groups: GROUPS,
@@ -17,13 +17,22 @@ export const product = defineType({
   description:
     'A product that will be published on the website. Add a title, description, autor, and content to create a new post.',
   fields: [
-    orderRankField({type: 'product'}),
+    orderRankField({type: 'productAutoIncrement'}),
     defineField({
       name: 'title',
       type: 'string',
       title: 'Title',
       description:
         'The title of the product. This will be displayed in the product list and on the product page.',
+      group: GROUP.MAIN_CONTENT,
+    }),
+    defineField({
+      name: 'autoId',
+      type: 'number',
+      title: 'Auto ID',
+      description: 'The auto-incremented ID of the product',
+      initialValue: undefined,
+      readOnly: true,
       group: GROUP.MAIN_CONTENT,
     }),
     defineField({

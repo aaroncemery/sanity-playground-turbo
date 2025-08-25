@@ -6,7 +6,7 @@ export default defineBlueprint({
       name: 'auto-increment',
       event: {
         on: ['create'],
-        filter: '_type == "product" && !defined(autoId)',
+        filter: '_type == "productAutoIncrement" && !defined(autoId)',
         projection: '{_id, _type, autoId}',
       },
     }),
