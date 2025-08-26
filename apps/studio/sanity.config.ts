@@ -43,6 +43,8 @@ export default defineConfig({
   document: {
     actions: (prev, context) => {
       // List of document types that have workflow
+      console.log('context', context)
+
       const workflowEnabledTypes = ['product'] // Add your document types here
 
       // Safely get document type name with explicit type checking
